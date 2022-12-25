@@ -1,0 +1,70 @@
+.login-card {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    height: 50%;
+    width: 50%;
+    border: 1px solid #000000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.log-head {
+    font-size: 25px;
+    font-family: 'Roboto';
+}
+
+.log-input-card {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-element {
+    width: 80%;
+    padding-left: 15px;
+    height: 30px;
+}
+
+.button {
+    background-color: blue;
+    color: #ffffff;
+    padding: 5px;
+
+}
+
+/* --------------------------- Game Start ------------------------------------ */
+
+h1 {
+    text-align: center;
+    font-size: 4rem;
+}
+
+#tiles {
+    width: 400px;
+    margin: 0 auto;
+    position: relative;
+    background-color: white;
+    padding: 8px;
+    border-radius: 0.5rem;
+    border: 1px solid black;
+}
+
+.selected {
+    background-color: #FFF;
+    border: none;
+    color: white;
+}
+
+.btn {
+    font-size: 24px;
+    height: 80px;
+    width: 25%;
+    cursor: pointer;
+}

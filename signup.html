@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="signup.css" />
+    <script src="signup.js"></script>
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="login-card">
+        <form class="login-form" onsubmit="SignupSubmitHandler()">
+            <h1 class="log-head">Sign Up Page </h1>
+            <div class="log-input-card">
+                <label for="email">Email</label>
+                <br />
+                <input id="email" name="email" class="input-element" type="text" placeholder="Email"
+                    onchange="ChangeHandler()" />
+            </div>
+            <div class="log-input-card">
+                <label for="password">Password</label>
+                <br />
+                <input id="password" name="password" class="input-element" type="password" placeholder="Password"
+                    onchange="ChangeHandler()" />
+            </div>
+            <div class="log-input-card">
+                <label for="date">DOB</label>
+                <br />
+                <input id="date" name="date" class="input-element" type="date" placeholder="DOB"
+                    onchange="ChangeHandler()" />
+            </div>
+            <div class="log-input-card">
+                <label for="number">Phone Number</label>
+                <br />
+                <input id="number" name="number" class="input-element" type="text" placeholder="Phone Number"
+                    onchange="ChangeHandler()" />
+            </div>
+            <div class="log-input-card">
+                <label for="address">Address</label>
+                <br />
+                <input id="address" name="address" class="input-element" type="text" placeholder="Address"
+                    onchange="ChangeHandler()" />
+            </div>
+            <button type="submit" class="button">Submit</button>
+            <a href="index.html">click here to login</a>
+        </form>
+
+    </div>
+</body>
+
+</html>

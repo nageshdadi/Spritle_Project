@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css" />
+    <!-- <script src="login.js"></script> -->
+    <title>Login</title>
+</head>
+
+<body>
+
+    <div id="loginCrad" class="login-card">
+        <form class="login-form">
+            <h1 class="log-head">Login Page</h1>
+            <div class="log-input-card">
+                <label for="email">Email</label>
+                <br />
+                <input class="input-element" name="email" id="email" type="text" placeholder="Email"
+                    onchange="loginChangeHandler()" />
+            </div>
+            <div class="log-input-card">
+                <label for="password">Password</label>
+                <br />
+                <input class="input-element" name="password" id="password" type="password" placeholder="Password"
+                    onchange="loginChangeHandler()" />
+            </div>
+            <button type="button" onclick="loginSubmit()" class="button">login</button>
+
+            <a href="signup.html">click here to sign up</a>
+        </form>
+    </div>
+
+
+    <div id="game" class="game" style="display: none;">
+        <h1>Sliding Puzzle</h1>
+        <div id="tiles">
+        </div>
+    </div>
+
+    <script>
+
+        //  ------------------------------js for login-----------------------------
+
+        var loginData = {
+            email: "",
+            password: "",
+        }
+
+        function loginChangeHandler() {
+            loginData.email = document.getElementById("email").value
+            loginData.password = document.getElementById("password").value
+        }
+
+        function loginSubmit(e) {
+            // e.preventDefault()
+
+            const userData = JSON.parse(localStorage.getItem('data'))
+            console.log(userData.email)
+            console.log(userData.password)
+
+            if (loginData.email === userData.email && loginData.password === userData.password) {
+                alert('user login success...')
+
+                var login = document.getElementById("loginCrad")
+                var game = document.getElementById("game")
+
+                login.style.display = "none"
+                game.style.display = "block"
+            }
+            else {
+                alert('login failed...')
+            }
+        }
+
+        // -------------------------js for game -------------------------
+
+
+        let size = 4;
+        let numberOfTiles = size ** 2;
+        let highlighted = numberOfTiles;
+        let shuffled = false;
+
+        let buttonContainer = document.getElementById('tiles');
+
+        // Keyboard controls
+        const RIGHT_ARROW = 39;
+        const LEFT_ARROW = 37;
+        const UP_ARROW = 40;
+        const DOWN_ARROW = 38;
+        window.onkeydown = function (event) {
+            console.log(event.keyCode);
+            if (event.keyCode === RIGHT_ARROW) {
+                swap(highlighted + 1);
+            } else if (event.keyCode === LEFT_ARROW) {
+                swap(highlighted - 1);
+            } else if (event.keyCode === UP_ARROW) {
+                swap(highlighted + size);
+            } else if (event.keyCode === DOWN_ARROW) {
+                swap(highlighted - size);
+            }
+        };
+
+        newGame();
+
+        function newGame() {
+            loadTiles(size);
+            setTimeout(() => {
+                shuffle();
+            }, 500);
+        }
+
+        // Create buttons
+        function loadTiles(n) {
+            for (let b = 1; b <= numberOfTiles; b++) {
+                var newTile = document.createElement('button');
+                newTile.id = `btn${b}`;
+                newTile.setAttribute('index', b);
+                newTile.innerHTML = b;
+                newTile.classList.add('btn');
+                newTile.addEventListener('click', function () {
+                    swap(parseInt(this.getAttribute('index')));
+                });
+                buttonContainer.append(newTile);
+            }
+            selectedTileId = 'btn' + highlighted;
+            selectedTile = document.getElementById(selectedTileId);
+            selectedTile.classList.add("selected");
+        }
+
+        function shuffle() {
+            let minShuffles = 100;
+            let totalShuffles = minShuffles + Math.floor(Math.random() * (200 - 100) + 100);
+
+            for (let i = minShuffles; i <= totalShuffles; i++) {
+                setTimeout(function timer() {
+                    let x = Math.floor(Math.random() * 4);
+                    let direction = 0;
+                    if (x == 0) {
+                        direction = highlighted + 1;
+                    } else if (x == 1) {
+                        direction = highlighted - 1;
+                    } else if (x == 2) {
+                        direction = highlighted + size;
+                    } else if (x == 3) {
+                        direction = highlighted - size;
+                    }
+                    swap(direction);
+                    if (i >= totalShuffles - 1) {
+                        shuffled = true;
+                    }
+                }, i * 10);
+            }
+        }
+
+        // Swap tiles 
+        function swap(clicked) {
+            if (clicked < 1 || clicked > (numberOfTiles)) {
+                return;
+            }
+
+            // Check if we are trying to swap right
+            if (clicked == highlighted + 1) {
+                if (clicked % size != 1) {
+                    setSelected(clicked);
+                }
+                // Check if we are trying to swap left
+            } else if (clicked == highlighted - 1) {
+                if (clicked % size != 0) {
+                    setSelected(clicked);
+                }
+                // Check if we are trying to swap up
+            } else if (clicked == highlighted + size) {
+                setSelected(clicked);
+                // Check if we are trying to swap down 
+            } else if (clicked == highlighted - size) {
+                setSelected(clicked);
+            }
+
+            if (shuffled) {
+                if (checkHasWon()) {
+                    alert("Winner!")
+                }
+            }
+        }
+
+        function checkHasWon() {
+            for (let b = 1; b <= numberOfTiles; b++) {
+                currentTile = document.getElementById(`btn${b}`);
+                currentTileIndex = currentTile.getAttribute('index');
+                currentTileValue = currentTile.innerHTML;
+                if (parseInt(currentTileIndex) != parseInt(currentTileValue)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Applies stylings to the selected tile
+        function setSelected(index) {
+            currentTile = document.getElementById(`btn${highlighted}`);
+            currentTileText = currentTile.innerHTML;
+            currentTile.classList.remove('selected');
+            newTile = document.getElementById(`btn${index}`);
+            currentTile.innerHTML = newTile.innerHTML;
+            newTile.innerHTML = currentTileText;
+            newTile.classList.add("selected");
+            highlighted = index;
+        }
+    </script>
+</body>
+
+</html>
